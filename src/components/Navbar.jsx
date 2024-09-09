@@ -6,6 +6,8 @@ import { useState } from "react";
 import logo from "../assets/logo.png";
 import { navItems } from "../constants";
 
+import { Link } from "react-scroll";
+
 export default function Navbar() {
     const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
 
@@ -25,15 +27,35 @@ export default function Navbar() {
                     <span className="text-xl tracking-tight">VirtualR</span>
                 </div>
 
+                {/* Desktop Navigation */}
                 <ul className='hidden lg:flex ml-14 space-x-12'>
-                    {
+                    {/* {
                         navItems.map( (item, index) => (
                             <li key={index}>
                                 <a href={item.href}> {item.label} </a>
                             </li>
                         ))
+                    } */}
+
+                    {
+                        navItems.map( (item, index) => (
+                            <li key={index} className="cursor-pointer" > 
+                            <Link 
+                                to={item.href}  // Use the `href` from navItems
+                                smooth={true}     // Smooth scrolling effect
+                                duration={500}    // Scroll duration in ms
+                                offset={-70}      // Offset to adjust for fixed navbar height
+                                activeClass="active"  // Class to apply when link is active
+                                spy={true}        // Add spy to track the scroll position
+                            >
+                                {item.label}
+                            </Link>
+                            </li>
+                        ))
                     }
                 </ul>
+
+                {/* Desktop Sign In / Account */}
                 <div className="hidden lg:flex justify-center space-x-12 items-center">
                     <a href="#"
                        className='py-2 px-3 border rounded-md'>
@@ -44,6 +66,8 @@ export default function Navbar() {
                         Create an account
                     </a>
                 </div>
+
+                {/* Mobile Menu Toggle */}
                 <div className="lg:hidden md:flex flex-col justify-end">
                     <button onClick={toggleNavbar}>
                         {
@@ -52,16 +76,27 @@ export default function Navbar() {
                     </button>
                 </div>
             </div>
-
+            
+            {/* Mobile Drawer */}
             {mobileDrawerOpen && (
                 <div className="fixed right-0 z-20 bg-neutral-900 w-full p-12 flex flex-col justify-center items-center lg:hidden">
                     <ul>
                         {navItems.map( (item, index) => (
                             <li key={index} className='py-4'>
-                                <a href="{item.href}"> {item.label} </a>
+                                {/* <a href="{item.href}"> {item.label} </a> */}
+                            <Link 
+                                to={item.href}   // Use the `href` for scrolling
+                                smooth={true} 
+                                duration={500} 
+                                offset={-70}
+                                onClick={toggleNavbar}  // Close menu when clicked
+                            >
+                                {item.label}
+                            </Link>
                             </li>
                         ))}
                     </ul>
+
                     <div className="flex space-x-6">
                         <a href="#" className='py-2 px-3 border rounded-md'>
                             Sign In
@@ -71,6 +106,7 @@ export default function Navbar() {
                             Create an account
                         </a>
                     </div>
+
                 </div>
             )}
 
